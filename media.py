@@ -26,6 +26,7 @@ class Movie():
         self.trailer_youtube_url = trailer_youtube
         self.year = movie_year
         self.__set_correct_rating(movie_rating)
+        self.__comparison_flag = 0
 
     def __set_correct_rating(self, my_rating):
         if (int)(my_rating) > Movie.MAX_RATING:
@@ -34,6 +35,67 @@ class Movie():
             self.__rating = Movie.MIN_RATING
         else:
             self.__rating = (int)(my_rating)
+
+    def __compare_by_year(self,other):
+        if self.year > other.year:
+            self.__comparison_flag = 1
+            return 1
+        elif self.year < other.year:
+            self.__comparison_flag = -1
+            return -1
+        else:
+            self.__comparison_flag = 0
+            return 0
+
+    def __compare_by_title(self,other):
+        if self.title > other.title:
+            self.__comparison_flag = 1
+            return 1
+        elif self.title < other.title:
+            self.__comparison_flag = -1
+            return -1
+        else:
+            self.__comparison_flag = 0
+            return 0
+
+    def __compare_by_storyline(self,other):
+        if self.storyline > other.storyline:
+            self.__comparison_flag = 1
+            return 1
+        elif self.storyline < other.storyline:
+            self.__comparison_flag = -1
+            return -1
+        else:
+            self.__comparison_flag = 0
+            return 0
+
+    def __compare_by_rating(self,other):
+        if self.__rating > other.get_rating():
+            self.__comparison_flag = -1
+            return -1
+        elif self.__rating < other.get_rating():
+            self.__comparison_flag = 1
+            return 1
+        else:
+            self.__comparison_flag = 0
+            return 0
+
+    def __cmp__(self, other):
+        if other == None:
+            return 1
+            #returns 1 because any object is superior to no object 
+        if not isinstance(other, Movie):
+            return 1
+            #returns 1 because any Movie object is superior to other object
+        #print 'am comparat ' + str(self.year) + ' - ' + str(other.year)
+        if self.__compare_by_rating(other) != 0:
+            return self.__comparison_flag
+        elif self.__compare_by_title(other) != 0:
+            return self.__comparison_flag
+        elif self.__compare_by_year(other) != 0:
+            return self.__comparison_flag
+        else:
+            return self.__compare_by_year(storyline)
 
     def get_genre(self):
         return self.__genre
