@@ -160,6 +160,8 @@ astro_boy = media.Movie("Astro Boy",
 movies = {}
 
 def add(movies, movie_list):
+    #adds a movie list to the dictionary
+    #genres are entry keys to the dictionary
     for aMovie in movie_list:
         if isinstance(aMovie, media.Movie):
             if aMovie.get_genre() in movies:
@@ -167,47 +169,19 @@ def add(movies, movie_list):
             else:
                 movies[aMovie.get_genre()] = [aMovie]
 
-def print_filme(filme):
-    print 'Filme :'
-    for film in filme:
-        print film.title + " " + str(film.year)
-
 def sort_by_genres(myDict):
+    #for each genre , we keep a list of movies belonging to that genre
+    #this function sorts each of these lists , in descending order by the
+    #movie rating and then in case of equality , in ascending order by the
+    #movie title , year and finallty storyline . Movies are shown in this
+    #order on the website( when a genre is chosen )
     for key in myDict:
         myDict[key].sort()
 
-def print_dict(myDict):
-    for key in myDict:
-        print key
-        print_filme(myDict[key])
 
 movies_list = [artificial_intelligence, avatar, home_alone, nine_eleven, IT, the_exorcist,
                i_robot, her, the_cure, minions, titanic, american_pie, the_omen, old_school, astro_boy]
-movies_list.sort()
-print_filme(movies_list)
 add(movies, movies_list)
-print movies
-lista = movies.keys()
-lista.sort()
-print lista
-print '================================='
-print_dict(movies)
-print '*********************************'
 sort_by_genres(movies)
-print '*********************************'
-print_dict(movies)
-
-
-    
-#print(avatar.storyline)
-#avatar.show_trailer()
-#print avatar.get_genre()
-#print avatar.get_rating()
-#avatar.set_rating(5)
-#print avatar.get_rating()
-#print movies_list
-#movies_list.sort()
-#print_filme(movies_list)
-#print movies
 
 fresh_tomatoes.open_movies_page(movies)

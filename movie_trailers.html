@@ -67,11 +67,14 @@
               'frameborder': 0
             }));
         });
+        // Navbar autocollapse after a click
         $(document).on('click','.navbar-collapse.in',function(e) {
           if( $(e.target).is('a') ) {
             $(this).collapse('hide');
           }
         });
+        // The navbar is being disabled until the current animation
+        // get finished ( to prevent concurrency issues )
         function show_genre(key, elem){
           $('li').removeClass("active");
           $(elem).addClass("active");
@@ -96,14 +99,14 @@
                 $(this).next("div").show("fast", showNext);
             }
           });
-					$("#aDrama").click(function() {
-						if(!$("#aDrama").hasClass("is-disabled")) {
-						show_genre(".genre-drama", "#navDrama");
-						}
-					});
 					$("#aAction").click(function() {
 						if(!$("#aAction").hasClass("is-disabled")) {
 						show_genre(".genre-action", "#navAction");
+						}
+					});
+					$("#aDrama").click(function() {
+						if(!$("#aDrama").hasClass("is-disabled")) {
+						show_genre(".genre-drama", "#navDrama");
 						}
 					});
 					$("#aHorror").click(function() {
@@ -156,8 +159,8 @@
           <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
               	<li id='allMovies' ><a href="movie_trailers.html">All movies</a></li>
-								<li id='navDrama'><a id='aDrama' href="#" class="can-be-disabled" >Drama</a></li>
 								<li id='navAction'><a id='aAction' href="#" class="can-be-disabled" >Action</a></li>
+								<li id='navDrama'><a id='aDrama' href="#" class="can-be-disabled" >Drama</a></li>
 								<li id='navHorror'><a id='aHorror' href="#" class="can-be-disabled" >Horror</a></li>
 								<li id='navComedy'><a id='aComedy' href="#" class="can-be-disabled" >Comedy</a></li>
 								<li id='navSci-Fi'><a id='aSci-Fi' href="#" class="can-be-disabled" >Sci-Fi</a></li>
@@ -169,6 +172,14 @@
     
 <div class="container">
     
+	<div title="A group of 5 people find themselves trapped in an elevator in the World Trade Center's North Tower on 9/11" class="col-md-6 col-lg-4 movie-tile genre-action can-be-disabled text-center" data-trailer-youtube-id="8rL4xYyaDjU" data-toggle="modal" data-target="#trailer">
+    	<h2><strong>9/11</strong></h2>
+    	<img src="https://upload.wikimedia.org/wikipedia/en/5/50/9_11_%282017_film%29.png" width="220" height="342">
+    	<p style="margin-top:20px; font-size:25px; color:green;"><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span></p>
+    	<h3>Director: Martin Guigui</h3>
+    	<h3>( 2017 )</h3>
+	</div>
+
 	<div title="Erik, a loner, finds a friend in Dexter, an eleven-year-old boy with AIDS." class="col-md-6 col-lg-4 movie-tile genre-drama can-be-disabled text-center" data-trailer-youtube-id="sa1tVnGSbXs" data-toggle="modal" data-target="#trailer">
     	<h2><strong>The Cure</strong></h2>
     	<img src="https://upload.wikimedia.org/wikipedia/en/b/b3/The_Cure_1995.jpg" width="220" height="342">
@@ -183,14 +194,6 @@
     	<p style="margin-top:20px; font-size:25px; color:green;"><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span></p>
     	<h3>Director: James Cameron</h3>
     	<h3>( 1997 )</h3>
-	</div>
-
-	<div title="A group of 5 people find themselves trapped in an elevator in the World Trade Center's North Tower on 9/11" class="col-md-6 col-lg-4 movie-tile genre-action can-be-disabled text-center" data-trailer-youtube-id="8rL4xYyaDjU" data-toggle="modal" data-target="#trailer">
-    	<h2><strong>9/11</strong></h2>
-    	<img src="https://upload.wikimedia.org/wikipedia/en/5/50/9_11_%282017_film%29.png" width="220" height="342">
-    	<p style="margin-top:20px; font-size:25px; color:green;"><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span></p>
-    	<h3>Director: Martin Guigui</h3>
-    	<h3>( 2017 )</h3>
 	</div>
 
 	<div title="An American official realizes that his young son may literally be the Devil incarnate." class="col-md-6 col-lg-4 movie-tile genre-horror can-be-disabled text-center" data-trailer-youtube-id="6dxEtoTXZE0" data-toggle="modal" data-target="#trailer">

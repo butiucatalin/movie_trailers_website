@@ -76,11 +76,14 @@ main_page_head_up = '''
               'frameborder': 0
             }));
         });
+        // Navbar autocollapse after a click
         $(document).on('click','.navbar-collapse.in',function(e) {
           if( $(e.target).is('a') ) {
             $(this).collapse('hide');
           }
         });
+        // The navbar is being disabled until the current animation
+        // get finished ( to prevent concurrency issues )
         function show_genre(key, elem){
           $('li').removeClass("active");
           $(elem).addClass("active");
@@ -169,6 +172,8 @@ movie_tile_content = '''
 '''
 
 def render_movie_stars(movie):
+    # This function returns a html template which shows the movie's ratings
+    # ( number of stars )
     html_text = ''
     index = 0
     while index < movie.get_rating():
@@ -201,6 +206,11 @@ def create_movie_tiles_content(movies):
     return content
 
 def create_navbar(movies):
+    # Creates two html templates that manages the navbar ands its behaviours
+    # Outputs :
+    # options : a list of hyperlinks ( html tamplate )
+    # functions : a list of several JQuerry functions that control the
+    # behavoiur(generally the click events) of each list item
     functions=''
     currentt_function='''\n\t$("{aul}").click(function(){\n\t\tshow_genre("{genul}", "{lista}");\n\t});'''
     options='''\t<li id='allMovies' ><a href="movie_trailers.html">All movies</a></li>'''
@@ -217,16 +227,19 @@ def create_navbar(movies):
     return options, functions
 
 def open_movies_page(movies):
+  # This function creates and opens the webpage !
+    
   # Create or overwrite the output file
   output_file = open('movie_trailers.html', 'w')
 
-  # Replace the placeholder for the movie tiles with the actual dynamically generated content
+  # Replace the placeholders for the movie tiles and navbar lists with the
+  # actual dynamically generated content 
   navbar_list_content, navbar_behaviour_content = create_navbar(movies)
-  print navbar_behaviour_content
   rendered_content = main_page_content.format(
       movie_tiles=create_movie_tiles_content(movies),
       navbar_list = navbar_list_content )
-
+  
+  # Renders the head of the page ( scripts also ! )
   main_page_head_rendered = main_page_head_up + navbar_behaviour_content + \
                             main_page_head_down
 
