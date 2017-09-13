@@ -1,7 +1,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Fresh Tomatoes!</title>
+    <title>My favourite movie trailers</title>
 
     <!-- Bootstrap 3 -->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
@@ -67,11 +67,61 @@
               'frameborder': 0
             }));
         });
+        $(document).on('click','.navbar-collapse.in',function(e) {
+          if( $(e.target).is('a') ) {
+            $(this).collapse('hide');
+          }
+        });
+        function show_genre(key, elem){
+          $('li').removeClass("active");
+          $(elem).addClass("active");
+          $('.movie-tile').css("display","none");
+          $('.can-be-disabled').addClass("is-disabled");
+          $(key).hide().first().show("fast", function showNext() {
+            if(!$(this).nextAll(key).first().hasClass("movie-tile")){
+              $('.can-be-disabled').removeClass("is-disabled");
+            }
+            else{
+              $(this).nextAll(key).first().show("fast", showNext);
+            }
+          });
+        }
         // Animate in the movies when the page loads
         $(document).ready(function () {
+          $('.can-be-disabled').addClass("is-disabled");
+          $('#allMovies').addClass("active");
           $('.movie-tile').hide().first().show("fast", function showNext() {
-            $(this).next("div").show("fast", showNext);
+            if(!$(this).next("div").hasClass("movie-tile")){
+              //alert('gata!');
+              $('.can-be-disabled').removeClass("is-disabled");
+            }
+            else{
+              //alert($(this).next("div"));
+              $(this).next("div").show("fast", showNext);
+            }
+
           });
+					$("#aDrama").click(function(){
+            if(!$('#aDrama').hasClass("is-disabled")){
+		show_genre(".genre-drama", "#navDrama");
+  }
+	});
+					$("#aAction").click(function(){
+            if(!$('#aAction').hasClass("is-disabled")){
+		show_genre(".genre-action", "#navAction");}
+	});
+					$("#aHorror").click(function(){
+            if(!$('#aHorror').hasClass("is-disabled")){
+		show_genre(".genre-horror", "#navHorror");}
+	});
+					$("#aComedy").click(function(){
+            if(!$('#aComedy').hasClass("is-disabled")){
+		show_genre(".genre-comedy", "#navComedy");}
+	});
+					$("#aSci-Fi").click(function(){
+            if(!$('#aSci-Fi').hasClass("is-disabled")){
+		show_genre(".genre-sci-fi", "#navSci-Fi");}
+	});
         });
     </script>
 </head>
@@ -106,113 +156,118 @@
           </div>
           <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-              
+              	<li id='allMovies' ><a href="movie_trailers.html">All movies</a></li>
+								<li id='navDrama'><a id='aDrama' class="can-be-disabled" href="#" title="todo">Drama</a></li>
+								<li id='navAction'><a id='aAction' class="can-be-disabled" href="#" title="todo">Action</a></li>
+								<li id='navHorror'><a id='aHorror' class="can-be-disabled" href="#" title="todo">Horror</a></li>
+								<li id='navComedy'><a id='aComedy' class="can-be-disabled" href="#" title="todo">Comedy</a></li>
+								<li id='navSci-Fi'><a id='aSci-Fi' class="can-be-disabled" href="#" title="todo">Sci-Fi</a></li>
             </ul>
           </div>
         </div>
       </div>
     </div>
     <div class="container">
-      
-<div title="Erik, a loner, finds a friend in Dexter, an eleven-year-old boy with AIDS." class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="sa1tVnGSbXs" data-toggle="modal" data-target="#trailer">
+
+<div title="Erik, a loner, finds a friend in Dexter, an eleven-year-old boy with AIDS." class="col-md-6 col-lg-4 movie-tile genre-drama can-be-disabled text-center" data-trailer-youtube-id="sa1tVnGSbXs" data-toggle="modal" data-target="#trailer">
     <h2><strong>The Cure</strong></h2>
     <img src="https://upload.wikimedia.org/wikipedia/en/b/b3/The_Cure_1995.jpg" width="220" height="342">
     <h3>Director: Peter Horton</h3>
     <h3>( 1995 )</h3>
 </div>
 
-<div title="A seventeen-year-old aristocrat falls in love with a kind but poor artist aboard the luxurious, ill-fated R.M.S. Titanic." class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="2e-eXJ6HgkQ" data-toggle="modal" data-target="#trailer">
+<div title="A seventeen-year-old aristocrat falls in love with a kind but poor artist aboard the luxurious, ill-fated R.M.S. Titanic." class="col-md-6 col-lg-4 movie-tile genre-drama can-be-disabled text-center" data-trailer-youtube-id="2e-eXJ6HgkQ" data-toggle="modal" data-target="#trailer">
     <h2><strong>Titanic</strong></h2>
     <img src="https://upload.wikimedia.org/wikipedia/en/2/22/Titanic_poster.jpg" width="220" height="342">
     <h3>Director: James Cameron</h3>
     <h3>( 1997 )</h3>
 </div>
 
-<div title="A group of 5 people find themselves trapped in an elevator in the World Trade Center's North Tower on 9/11" class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="8rL4xYyaDjU" data-toggle="modal" data-target="#trailer">
+<div title="A group of 5 people find themselves trapped in an elevator in the World Trade Center's North Tower on 9/11" class="col-md-6 col-lg-4 movie-tile genre-action can-be-disabled text-center" data-trailer-youtube-id="8rL4xYyaDjU" data-toggle="modal" data-target="#trailer">
     <h2><strong>9/11</strong></h2>
     <img src="https://upload.wikimedia.org/wikipedia/en/5/50/9_11_%282017_film%29.png" width="220" height="342">
     <h3>Director: Martin Guigui</h3>
     <h3>( 2017 )</h3>
 </div>
 
-<div title="An American official realizes that his young son may literally be the Devil incarnate." class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="6dxEtoTXZE0" data-toggle="modal" data-target="#trailer">
+<div title="An American official realizes that his young son may literally be the Devil incarnate." class="col-md-6 col-lg-4 movie-tile genre-horror can-be-disabled text-center" data-trailer-youtube-id="6dxEtoTXZE0" data-toggle="modal" data-target="#trailer">
     <h2><strong>The Omen</strong></h2>
     <img src="https://upload.wikimedia.org/wikipedia/en/6/60/The_Omen_2006_poster.gif" width="220" height="342">
     <h3>Director: Jason Biggs</h3>
     <h3>( 2006 )</h3>
 </div>
 
-<div title="A group of bullied kids band together when a shapeshifting demon, taking the appearance of clown, begins hunting children. " class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="7no56Zw1e20" data-toggle="modal" data-target="#trailer">
+<div title="A group of bullied kids band together when a shapeshifting demon, taking the appearance of clown, begins hunting children. " class="col-md-6 col-lg-4 movie-tile genre-horror can-be-disabled text-center" data-trailer-youtube-id="7no56Zw1e20" data-toggle="modal" data-target="#trailer">
     <h2><strong>IT</strong></h2>
     <img src="https://upload.wikimedia.org/wikipedia/en/a/a2/It_%282017%29_logo.jpg" width="220" height="342">
     <h3>Director: Andy Muschietti</h3>
     <h3>( 2017 )</h3>
 </div>
 
-<div title="When a teenage girl is possessed by a mysterious entity, her mother seeks the help of two priests to save her daughter. " class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="gzFCk_cvmik" data-toggle="modal" data-target="#trailer">
+<div title="When a teenage girl is possessed by a mysterious entity, her mother seeks the help of two priests to save her daughter. " class="col-md-6 col-lg-4 movie-tile genre-horror can-be-disabled text-center" data-trailer-youtube-id="gzFCk_cvmik" data-toggle="modal" data-target="#trailer">
     <h2><strong>The Exorcist</strong></h2>
     <img src="https://upload.wikimedia.org/wikipedia/ro/c/cc/Exorcistul.jpg" width="220" height="342">
     <h3>Director: William Friedkin</h3>
     <h3>( 1973 )</h3>
 </div>
 
-<div title="Minions Stuart, Kevin, and Bob are recruited by Scarlet Overkill, a supervillain who hatches a plot to take over the world." class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="eisKxhjBnZ0" data-toggle="modal" data-target="#trailer">
+<div title="Minions Stuart, Kevin, and Bob are recruited by Scarlet Overkill, a supervillain who hatches a plot to take over the world." class="col-md-6 col-lg-4 movie-tile genre-comedy can-be-disabled text-center" data-trailer-youtube-id="eisKxhjBnZ0" data-toggle="modal" data-target="#trailer">
     <h2><strong>Minions</strong></h2>
     <img src="https://upload.wikimedia.org/wikipedia/en/3/3d/Minions_poster.jpg" width="220" height="342">
     <h3>Director: Kyle Balda</h3>
     <h3>( 2015 )</h3>
 </div>
 
-<div title="An eight-year-old troublemaker must protect his house from a pair of burglars" class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="CK2Btk6Ybm0" data-toggle="modal" data-target="#trailer">
+<div title="An eight-year-old troublemaker must protect his house from a pair of burglars" class="col-md-6 col-lg-4 movie-tile genre-comedy can-be-disabled text-center" data-trailer-youtube-id="CK2Btk6Ybm0" data-toggle="modal" data-target="#trailer">
     <h2><strong>Home Alone</strong></h2>
     <img src="https://upload.wikimedia.org/wikipedia/en/7/76/Home_alone_poster.jpg" width="220" height="342">
     <h3>Director: Chris Columbus</h3>
     <h3>( 1990 )</h3>
 </div>
 
-<div title="Four teenage boys enter a pact to lose their virginity by prom night." class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="Sithad108Og" data-toggle="modal" data-target="#trailer">
+<div title="Four teenage boys enter a pact to lose their virginity by prom night." class="col-md-6 col-lg-4 movie-tile genre-comedy can-be-disabled text-center" data-trailer-youtube-id="Sithad108Og" data-toggle="modal" data-target="#trailer">
     <h2><strong>American Pie</strong></h2>
     <img src="https://upload.wikimedia.org/wikipedia/en/c/c8/American_Pie1.jpg" width="220" height="342">
     <h3>Director: Jason Biggs</h3>
     <h3>( 1999 )</h3>
 </div>
 
-<div title="Three friends attempt to recapture their glory days by opening up a fraternity near their alma mater. " class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="HNyxTUX-9_U" data-toggle="modal" data-target="#trailer">
+<div title="Three friends attempt to recapture their glory days by opening up a fraternity near their alma mater. " class="col-md-6 col-lg-4 movie-tile genre-comedy can-be-disabled text-center" data-trailer-youtube-id="HNyxTUX-9_U" data-toggle="modal" data-target="#trailer">
     <h2><strong>Old School</strong></h2>
     <img src="https://upload.wikimedia.org/wikipedia/en/2/21/Old_s_poster.jpg" width="220" height="342">
     <h3>Director: Todd Phillips</h3>
     <h3>( 2003 )</h3>
 </div>
 
-<div title="A highly advanced robotic boy longs to become "real" so that he can regain the love of his human mother. " class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="_19pRsZRiz4" data-toggle="modal" data-target="#trailer">
+<div title="A highly advanced robotic boy longs to become "real" so that he can regain the love of his human mother. " class="col-md-6 col-lg-4 movie-tile genre-sci-fi can-be-disabled text-center" data-trailer-youtube-id="_19pRsZRiz4" data-toggle="modal" data-target="#trailer">
     <h2><strong>Artificial Intelligence</strong></h2>
     <img src="https://upload.wikimedia.org/wikipedia/en/e/e6/AI_Poster.jpg" width="220" height="342">
     <h3>Director: Steven Spielberg</h3>
     <h3>( 2001 )</h3>
 </div>
 
-<div title="When an android replica of a boy is rejected by his aggrieved creator, he goes off to find his own identity in an adventure that would make him the greatest hero of his time." class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="1AhqOHom9BY" data-toggle="modal" data-target="#trailer">
+<div title="When an android replica of a boy is rejected by his aggrieved creator, he goes off to find his own identity in an adventure that would make him the greatest hero of his time." class="col-md-6 col-lg-4 movie-tile genre-sci-fi can-be-disabled text-center" data-trailer-youtube-id="1AhqOHom9BY" data-toggle="modal" data-target="#trailer">
     <h2><strong>Astro Boy</strong></h2>
     <img src="https://upload.wikimedia.org/wikipedia/en/e/e0/Astro_boy_ver7.jpg" width="220" height="342">
     <h3>Director: David Bowers</h3>
     <h3>( 2009 )</h3>
 </div>
 
-<div title="A marine on an alien planet" class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="-9ceBgWV8io" data-toggle="modal" data-target="#trailer">
+<div title="A marine on an alien planet" class="col-md-6 col-lg-4 movie-tile genre-sci-fi can-be-disabled text-center" data-trailer-youtube-id="-9ceBgWV8io" data-toggle="modal" data-target="#trailer">
     <h2><strong>Avatar</strong></h2>
     <img src="http://upload.wikimedia.org/wikipedia/id/b/b0/Avatar-Teaser-Poster.jpg" width="220" height="342">
     <h3>Director: James Cameron</h3>
     <h3>( 2009 )</h3>
 </div>
 
-<div title="In 2035, a technophobic cop investigates a crime that may have been perpetrated by a robot, which leads to a larger threat to humanity." class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="rL6RRIOZyCM" data-toggle="modal" data-target="#trailer">
+<div title="In 2035, a technophobic cop investigates a crime that may have been perpetrated by a robot, which leads to a larger threat to humanity." class="col-md-6 col-lg-4 movie-tile genre-sci-fi can-be-disabled text-center" data-trailer-youtube-id="rL6RRIOZyCM" data-toggle="modal" data-target="#trailer">
     <h2><strong>I, Robot</strong></h2>
     <img src="https://upload.wikimedia.org/wikipedia/en/3/3b/Movie_poster_i_robot.jpg" width="220" height="342">
     <h3>Director: Alex Proyas</h3>
     <h3>( 2004 )</h3>
 </div>
 
-<div title="A lonely writer develops an unlikely relationship with an operating system designed to meet his every need." class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="6QRvTv_tpw0" data-toggle="modal" data-target="#trailer">
+<div title="A lonely writer develops an unlikely relationship with an operating system designed to meet his every need." class="col-md-6 col-lg-4 movie-tile genre-sci-fi can-be-disabled text-center" data-trailer-youtube-id="6QRvTv_tpw0" data-toggle="modal" data-target="#trailer">
     <h2><strong>Her</strong></h2>
     <img src="https://upload.wikimedia.org/wikipedia/en/4/44/Her2013Poster.jpg" width="220" height="342">
     <h3>Director: Spike Jonze</h3>

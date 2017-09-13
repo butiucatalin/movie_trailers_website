@@ -1,12 +1,16 @@
 import webbrowser
 import os
 import re
+from media import Movie
+
+HTML_NAVBAR_TABS = 8
+JQUERY_NAVBAR_TABS = 5
 
 # Styles and scripting for the page
-main_page_head = '''
+main_page_head_up = '''
 <head>
     <meta charset="utf-8">
-    <title>Fresh Tomatoes!</title>
+    <title>My favourite movie trailers</title>
 
     <!-- Bootstrap 3 -->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
@@ -37,7 +41,7 @@ main_page_head = '''
             padding-top: 20px;
         }
         .movie-tile:hover {
-            background-color: #EEE;
+            background-color: #eee5da;
             cursor: pointer;
         }
         .scale-media {
@@ -72,11 +76,36 @@ main_page_head = '''
               'frameborder': 0
             }));
         });
+        $(document).on('click','.navbar-collapse.in',function(e) {
+          if( $(e.target).is('a') ) {
+            $(this).collapse('hide');
+          }
+        });
+        function show_genre(key, elem){
+          $('li').removeClass("active");
+          $(elem).addClass("active");
+          $('.movie-tile').css("display","none");
+          $('.can-be-disabled').addClass("is-disabled");
+          $(key).hide().first().show("fast", function showNext() {
+            if(!$(this).nextAll(key).first().hasClass("movie-tile")) {
+                $('.can-be-disabled').removeClass("is-disabled");
+            } else {
+                $(this).nextAll(key).first().show("fast", showNext);
+            }
+          });
+        }
         // Animate in the movies when the page loads
         $(document).ready(function () {
+          $('.can-be-disabled').addClass("is-disabled");
+          $('#allMovies').addClass("active");
           $('.movie-tile').hide().first().show("fast", function showNext() {
-            $(this).next("div").show("fast", showNext);
-          });
+            if(!$(this).next("div").hasClass("movie-tile")) {
+                $('.can-be-disabled').removeClass("is-disabled");
+            } else{
+                $(this).next("div").show("fast", showNext);
+            }
+          });'''
+main_page_head_down = '''        
         });
     </script>
 </head>
@@ -86,7 +115,7 @@ main_page_head = '''
 main_page_content = '''
 <!DOCTYPE html>
 <html lang="en">
-  <body>
+  <body style="background-color:#fff8e6;">
     <!-- Trailer Video Modal -->
     <div class="modal" id="trailer">
       <div class="modal-dialog">
@@ -101,56 +130,108 @@ main_page_content = '''
     </div>
 
     <!-- Main Page Content -->
-    <div class="container">
+    <div class="container-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
           <div class="navbar-header">
-            <a class="navbar-brand" href="#">Fresh Tomatoes Movie Trailers</a>
+            <a class="navbar-brand" href="#">Katalinux Movie Trailers</a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+              {navbar_list}
+            </ul>
           </div>
         </div>
       </div>
     </div>
-    <div class="container">
-      {movie_tiles}
-    </div>
+    
+<div class="container">
+    {movie_tiles}
+</div>
   </body>
 </html>
 '''
 
 # A single movie entry html template
 movie_tile_content = '''
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
-    <img src="{poster_image_url}" width="220" height="342">
-    <h2>{movie_title}</h2>
-</div>
+\t<div title="{movie_storyline}" class="col-md-6 col-lg-4 movie-tile {class_genre} can-be-disabled text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
+    \t<h2><strong>{movie_title}</strong></h2>
+    \t<img src="{poster_image_url}" width="220" height="342">
+    \t<p style="margin-top:20px; font-size:25px; color:green;">{movie_stars}</p>
+    \t<h3>Director: {movie_director}</h3>
+    \t<h3>( {movie_year} )</h3>
+\t</div>
 '''
+
+def render_movie_stars(movie):
+    html_text = ''
+    index = 0
+    while index < movie.get_rating():
+        html_text += '''<span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span>'''
+        index += 1
+    while index < Movie.MAX_RATING:
+        html_text += '''<span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span>'''
+        index += 1
+    return html_text
 
 def create_movie_tiles_content(movies):
     # The HTML content for this section of the page
     content = ''
-    for movie in movies:
-        # Extract the youtube ID from the url
-        youtube_id_match = re.search(r'(?<=v=)[^&#]+', movie.trailer_youtube_url)
-        youtube_id_match = youtube_id_match or re.search(r'(?<=be/)[^&#]+', movie.trailer_youtube_url)
-        trailer_youtube_id = youtube_id_match.group(0) if youtube_id_match else None
+    for gender in movies:
+        for movie in movies[gender]:
+            # Extract the youtube ID from the url
+            youtube_id_match = re.search(r'(?<=v=)[^&#]+', movie.trailer_youtube_url)
+            youtube_id_match = youtube_id_match or re.search(r'(?<=be/)[^&#]+', movie.trailer_youtube_url)
+            trailer_youtube_id = youtube_id_match.group(0) if youtube_id_match else None
 
-        # Append the tile for the movie with its content filled in
-        content += movie_tile_content.format(
-            movie_title=movie.title,
-            poster_image_url=movie.poster_image_url,
-            trailer_youtube_id=trailer_youtube_id
-        )
+            # Append the tile for the movie with its content filled in
+            content += movie_tile_content.format(
+                class_genre='genre-'+movie.get_genre().lower(),
+                movie_title=movie.title, movie_storyline=movie.storyline,
+                poster_image_url=movie.poster_image_url,
+                movie_director=movie.director, movie_year=movie.year,
+                trailer_youtube_id=trailer_youtube_id,
+                movie_stars=render_movie_stars(movie)
+            )
     return content
+
+def create_navbar(movies):
+    functions=''
+    currentt_function='''\n\t$("{aul}").click(function(){\n\t\tshow_genre("{genul}", "{lista}");\n\t});'''
+    options='''\t<li id='allMovies' ><a href="movie_trailers.html">All movies</a></li>'''
+    for genre in movies:
+        line='\n'+HTML_NAVBAR_TABS*'\t'+'''<li id='{id_li}'><a id='{id_a}' href="#" class="can-be-disabled" >{caption}</a></li>'''
+        options+=line.format(id_li="nav"+genre,id_a="a"+genre,caption=genre)
+        functions+='\n' + JQUERY_NAVBAR_TABS*'\t' + '''$("#a''' + genre + \
+            '''").click(function() {\n''' + (JQUERY_NAVBAR_TABS+1)*'\t' + \
+            '''if(!$("#a''' + genre + '''").hasClass("is-disabled")) {\n''' + \
+            (JQUERY_NAVBAR_TABS+1)*'\t' + '''show_genre(".genre-''' + \
+            genre.lower() + '''", "#nav''' + genre + '''");\n''' + \
+            (JQUERY_NAVBAR_TABS+1)*'\t' + '}\n' + JQUERY_NAVBAR_TABS*'\t' + \
+            '''});'''
+    return options, functions
 
 def open_movies_page(movies):
   # Create or overwrite the output file
-  output_file = open('fresh_tomatoes.html', 'w')
+  output_file = open('movie_trailers.html', 'w')
 
   # Replace the placeholder for the movie tiles with the actual dynamically generated content
-  rendered_content = main_page_content.format(movie_tiles=create_movie_tiles_content(movies))
+  navbar_list_content, navbar_behaviour_content = create_navbar(movies)
+  print navbar_behaviour_content
+  rendered_content = main_page_content.format(
+      movie_tiles=create_movie_tiles_content(movies),
+      navbar_list = navbar_list_content )
+
+  main_page_head_rendered = main_page_head_up + navbar_behaviour_content + \
+                            main_page_head_down
 
   # Output the file
-  output_file.write(main_page_head + rendered_content)
+  output_file.write(main_page_head_rendered + rendered_content)
   output_file.close()
 
   # open the output file in the browser

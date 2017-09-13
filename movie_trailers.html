@@ -1,0 +1,294 @@
+
+<head>
+    <meta charset="utf-8">
+    <title>My favourite movie trailers</title>
+
+    <!-- Bootstrap 3 -->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <style type="text/css" media="screen">
+        body {
+            padding-top: 80px;
+        }
+        #trailer .modal-dialog {
+            margin-top: 200px;
+            width: 640px;
+            height: 480px;
+        }
+        .hanging-close {
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            z-index: 9001;
+        }
+        #trailer-video {
+            width: 100%;
+            height: 100%;
+        }
+        .movie-tile {
+            margin-bottom: 20px;
+            padding-top: 20px;
+        }
+        .movie-tile:hover {
+            background-color: #eee5da;
+            cursor: pointer;
+        }
+        .scale-media {
+            padding-bottom: 56.25%;
+            position: relative;
+        }
+        .scale-media iframe {
+            border: none;
+            height: 100%;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: 0;
+            background-color: white;
+        }
+    </style>
+    <script type="text/javascript" charset="utf-8">
+        // Pause the video when the modal is closed
+        $(document).on('click', '.hanging-close, .modal-backdrop, .modal', function (event) {
+            // Remove the src so the player itself gets removed, as this is the only
+            // reliable way to ensure the video stops playing in IE
+            $("#trailer-video-container").empty();
+        });
+        // Start playing the video whenever the trailer modal is opened
+        $(document).on('click', '.movie-tile', function (event) {
+            var trailerYouTubeId = $(this).attr('data-trailer-youtube-id')
+            var sourceUrl = 'http://www.youtube.com/embed/' + trailerYouTubeId + '?autoplay=1&html5=1';
+            $("#trailer-video-container").empty().append($("<iframe></iframe>", {
+              'id': 'trailer-video',
+              'type': 'text-html',
+              'src': sourceUrl,
+              'frameborder': 0
+            }));
+        });
+        $(document).on('click','.navbar-collapse.in',function(e) {
+          if( $(e.target).is('a') ) {
+            $(this).collapse('hide');
+          }
+        });
+        function show_genre(key, elem){
+          $('li').removeClass("active");
+          $(elem).addClass("active");
+          $('.movie-tile').css("display","none");
+          $('.can-be-disabled').addClass("is-disabled");
+          $(key).hide().first().show("fast", function showNext() {
+            if(!$(this).nextAll(key).first().hasClass("movie-tile")) {
+                $('.can-be-disabled').removeClass("is-disabled");
+            } else {
+                $(this).nextAll(key).first().show("fast", showNext);
+            }
+          });
+        }
+        // Animate in the movies when the page loads
+        $(document).ready(function () {
+          $('.can-be-disabled').addClass("is-disabled");
+          $('#allMovies').addClass("active");
+          $('.movie-tile').hide().first().show("fast", function showNext() {
+            if(!$(this).next("div").hasClass("movie-tile")) {
+                $('.can-be-disabled').removeClass("is-disabled");
+            } else{
+                $(this).next("div").show("fast", showNext);
+            }
+          });
+					$("#aDrama").click(function() {
+						if(!$("#aDrama").hasClass("is-disabled")) {
+						show_genre(".genre-drama", "#navDrama");
+						}
+					});
+					$("#aAction").click(function() {
+						if(!$("#aAction").hasClass("is-disabled")) {
+						show_genre(".genre-action", "#navAction");
+						}
+					});
+					$("#aHorror").click(function() {
+						if(!$("#aHorror").hasClass("is-disabled")) {
+						show_genre(".genre-horror", "#navHorror");
+						}
+					});
+					$("#aComedy").click(function() {
+						if(!$("#aComedy").hasClass("is-disabled")) {
+						show_genre(".genre-comedy", "#navComedy");
+						}
+					});
+					$("#aSci-Fi").click(function() {
+						if(!$("#aSci-Fi").hasClass("is-disabled")) {
+						show_genre(".genre-sci-fi", "#navSci-Fi");
+						}
+					});        
+        });
+    </script>
+</head>
+
+<!DOCTYPE html>
+<html lang="en">
+  <body style="background-color:#fff8e6;">
+    <!-- Trailer Video Modal -->
+    <div class="modal" id="trailer">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <a href="#" class="hanging-close" data-dismiss="modal" aria-hidden="true">
+            <img src="https://lh5.ggpht.com/v4-628SilF0HtHuHdu5EzxD7WRqOrrTIDi_MhEG6_qkNtUK5Wg7KPkofp_VJoF7RS2LhxwEFCO1ICHZlc-o_=s0#w=24&h=24"/>
+          </a>
+          <div class="scale-media" id="trailer-video-container">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Page Content -->
+    <div class="container-fluid">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">Katalinux Movie Trailers</a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+              	<li id='allMovies' ><a href="movie_trailers.html">All movies</a></li>
+								<li id='navDrama'><a id='aDrama' href="#" class="can-be-disabled" >Drama</a></li>
+								<li id='navAction'><a id='aAction' href="#" class="can-be-disabled" >Action</a></li>
+								<li id='navHorror'><a id='aHorror' href="#" class="can-be-disabled" >Horror</a></li>
+								<li id='navComedy'><a id='aComedy' href="#" class="can-be-disabled" >Comedy</a></li>
+								<li id='navSci-Fi'><a id='aSci-Fi' href="#" class="can-be-disabled" >Sci-Fi</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+<div class="container">
+    
+	<div title="Erik, a loner, finds a friend in Dexter, an eleven-year-old boy with AIDS." class="col-md-6 col-lg-4 movie-tile genre-drama can-be-disabled text-center" data-trailer-youtube-id="sa1tVnGSbXs" data-toggle="modal" data-target="#trailer">
+    	<h2><strong>The Cure</strong></h2>
+    	<img src="https://upload.wikimedia.org/wikipedia/en/b/b3/The_Cure_1995.jpg" width="220" height="342">
+    	<p style="margin-top:20px; font-size:25px; color:green;"><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span></p>
+    	<h3>Director: Peter Horton</h3>
+    	<h3>( 1995 )</h3>
+	</div>
+
+	<div title="A seventeen-year-old aristocrat falls in love with a kind but poor artist aboard the luxurious, ill-fated R.M.S. Titanic." class="col-md-6 col-lg-4 movie-tile genre-drama can-be-disabled text-center" data-trailer-youtube-id="2e-eXJ6HgkQ" data-toggle="modal" data-target="#trailer">
+    	<h2><strong>Titanic</strong></h2>
+    	<img src="https://upload.wikimedia.org/wikipedia/en/2/22/Titanic_poster.jpg" width="220" height="342">
+    	<p style="margin-top:20px; font-size:25px; color:green;"><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span></p>
+    	<h3>Director: James Cameron</h3>
+    	<h3>( 1997 )</h3>
+	</div>
+
+	<div title="A group of 5 people find themselves trapped in an elevator in the World Trade Center's North Tower on 9/11" class="col-md-6 col-lg-4 movie-tile genre-action can-be-disabled text-center" data-trailer-youtube-id="8rL4xYyaDjU" data-toggle="modal" data-target="#trailer">
+    	<h2><strong>9/11</strong></h2>
+    	<img src="https://upload.wikimedia.org/wikipedia/en/5/50/9_11_%282017_film%29.png" width="220" height="342">
+    	<p style="margin-top:20px; font-size:25px; color:green;"><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span></p>
+    	<h3>Director: Martin Guigui</h3>
+    	<h3>( 2017 )</h3>
+	</div>
+
+	<div title="An American official realizes that his young son may literally be the Devil incarnate." class="col-md-6 col-lg-4 movie-tile genre-horror can-be-disabled text-center" data-trailer-youtube-id="6dxEtoTXZE0" data-toggle="modal" data-target="#trailer">
+    	<h2><strong>The Omen</strong></h2>
+    	<img src="https://upload.wikimedia.org/wikipedia/en/6/60/The_Omen_2006_poster.gif" width="220" height="342">
+    	<p style="margin-top:20px; font-size:25px; color:green;"><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span></p>
+    	<h3>Director: Jason Biggs</h3>
+    	<h3>( 2006 )</h3>
+	</div>
+
+	<div title="A group of bullied kids band together when a shapeshifting demon, taking the appearance of clown, begins hunting children. " class="col-md-6 col-lg-4 movie-tile genre-horror can-be-disabled text-center" data-trailer-youtube-id="7no56Zw1e20" data-toggle="modal" data-target="#trailer">
+    	<h2><strong>IT</strong></h2>
+    	<img src="https://upload.wikimedia.org/wikipedia/en/a/a2/It_%282017%29_logo.jpg" width="220" height="342">
+    	<p style="margin-top:20px; font-size:25px; color:green;"><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span></p>
+    	<h3>Director: Andy Muschietti</h3>
+    	<h3>( 2017 )</h3>
+	</div>
+
+	<div title="When a teenage girl is possessed by a mysterious entity, her mother seeks the help of two priests to save her daughter. " class="col-md-6 col-lg-4 movie-tile genre-horror can-be-disabled text-center" data-trailer-youtube-id="gzFCk_cvmik" data-toggle="modal" data-target="#trailer">
+    	<h2><strong>The Exorcist</strong></h2>
+    	<img src="https://upload.wikimedia.org/wikipedia/ro/c/cc/Exorcistul.jpg" width="220" height="342">
+    	<p style="margin-top:20px; font-size:25px; color:green;"><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span></p>
+    	<h3>Director: William Friedkin</h3>
+    	<h3>( 1973 )</h3>
+	</div>
+
+	<div title="Minions Stuart, Kevin, and Bob are recruited by Scarlet Overkill, a supervillain who hatches a plot to take over the world." class="col-md-6 col-lg-4 movie-tile genre-comedy can-be-disabled text-center" data-trailer-youtube-id="eisKxhjBnZ0" data-toggle="modal" data-target="#trailer">
+    	<h2><strong>Minions</strong></h2>
+    	<img src="https://upload.wikimedia.org/wikipedia/en/3/3d/Minions_poster.jpg" width="220" height="342">
+    	<p style="margin-top:20px; font-size:25px; color:green;"><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span></p>
+    	<h3>Director: Kyle Balda</h3>
+    	<h3>( 2015 )</h3>
+	</div>
+
+	<div title="An eight-year-old troublemaker must protect his house from a pair of burglars" class="col-md-6 col-lg-4 movie-tile genre-comedy can-be-disabled text-center" data-trailer-youtube-id="CK2Btk6Ybm0" data-toggle="modal" data-target="#trailer">
+    	<h2><strong>Home Alone</strong></h2>
+    	<img src="https://upload.wikimedia.org/wikipedia/en/7/76/Home_alone_poster.jpg" width="220" height="342">
+    	<p style="margin-top:20px; font-size:25px; color:green;"><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span></p>
+    	<h3>Director: Chris Columbus</h3>
+    	<h3>( 1990 )</h3>
+	</div>
+
+	<div title="Four teenage boys enter a pact to lose their virginity by prom night." class="col-md-6 col-lg-4 movie-tile genre-comedy can-be-disabled text-center" data-trailer-youtube-id="Sithad108Og" data-toggle="modal" data-target="#trailer">
+    	<h2><strong>American Pie</strong></h2>
+    	<img src="https://upload.wikimedia.org/wikipedia/en/c/c8/American_Pie1.jpg" width="220" height="342">
+    	<p style="margin-top:20px; font-size:25px; color:green;"><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span></p>
+    	<h3>Director: Jason Biggs</h3>
+    	<h3>( 1999 )</h3>
+	</div>
+
+	<div title="Three friends attempt to recapture their glory days by opening up a fraternity near their alma mater. " class="col-md-6 col-lg-4 movie-tile genre-comedy can-be-disabled text-center" data-trailer-youtube-id="HNyxTUX-9_U" data-toggle="modal" data-target="#trailer">
+    	<h2><strong>Old School</strong></h2>
+    	<img src="https://upload.wikimedia.org/wikipedia/en/2/21/Old_s_poster.jpg" width="220" height="342">
+    	<p style="margin-top:20px; font-size:25px; color:green;"><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span></p>
+    	<h3>Director: Todd Phillips</h3>
+    	<h3>( 2003 )</h3>
+	</div>
+
+	<div title="A highly advanced robotic boy longs to become "real" so that he can regain the love of his human mother. " class="col-md-6 col-lg-4 movie-tile genre-sci-fi can-be-disabled text-center" data-trailer-youtube-id="_19pRsZRiz4" data-toggle="modal" data-target="#trailer">
+    	<h2><strong>Artificial Intelligence</strong></h2>
+    	<img src="https://upload.wikimedia.org/wikipedia/en/e/e6/AI_Poster.jpg" width="220" height="342">
+    	<p style="margin-top:20px; font-size:25px; color:green;"><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span></p>
+    	<h3>Director: Steven Spielberg</h3>
+    	<h3>( 2001 )</h3>
+	</div>
+
+	<div title="When an android replica of a boy is rejected by his aggrieved creator, he goes off to find his own identity in an adventure that would make him the greatest hero of his time." class="col-md-6 col-lg-4 movie-tile genre-sci-fi can-be-disabled text-center" data-trailer-youtube-id="1AhqOHom9BY" data-toggle="modal" data-target="#trailer">
+    	<h2><strong>Astro Boy</strong></h2>
+    	<img src="https://upload.wikimedia.org/wikipedia/en/e/e0/Astro_boy_ver7.jpg" width="220" height="342">
+    	<p style="margin-top:20px; font-size:25px; color:green;"><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span></p>
+    	<h3>Director: David Bowers</h3>
+    	<h3>( 2009 )</h3>
+	</div>
+
+	<div title="A marine on an alien planet" class="col-md-6 col-lg-4 movie-tile genre-sci-fi can-be-disabled text-center" data-trailer-youtube-id="-9ceBgWV8io" data-toggle="modal" data-target="#trailer">
+    	<h2><strong>Avatar</strong></h2>
+    	<img src="http://upload.wikimedia.org/wikipedia/id/b/b0/Avatar-Teaser-Poster.jpg" width="220" height="342">
+    	<p style="margin-top:20px; font-size:25px; color:green;"><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span></p>
+    	<h3>Director: James Cameron</h3>
+    	<h3>( 2009 )</h3>
+	</div>
+
+	<div title="In 2035, a technophobic cop investigates a crime that may have been perpetrated by a robot, which leads to a larger threat to humanity." class="col-md-6 col-lg-4 movie-tile genre-sci-fi can-be-disabled text-center" data-trailer-youtube-id="rL6RRIOZyCM" data-toggle="modal" data-target="#trailer">
+    	<h2><strong>I, Robot</strong></h2>
+    	<img src="https://upload.wikimedia.org/wikipedia/en/3/3b/Movie_poster_i_robot.jpg" width="220" height="342">
+    	<p style="margin-top:20px; font-size:25px; color:green;"><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span></p>
+    	<h3>Director: Alex Proyas</h3>
+    	<h3>( 2004 )</h3>
+	</div>
+
+	<div title="A lonely writer develops an unlikely relationship with an operating system designed to meet his every need." class="col-md-6 col-lg-4 movie-tile genre-sci-fi can-be-disabled text-center" data-trailer-youtube-id="6QRvTv_tpw0" data-toggle="modal" data-target="#trailer">
+    	<h2><strong>Her</strong></h2>
+    	<img src="https://upload.wikimedia.org/wikipedia/en/4/44/Her2013Poster.jpg" width="220" height="342">
+    	<p style="margin-top:20px; font-size:25px; color:green;"><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span><span class="glyphicon glyphicon-star-empty" style="margin-left:5px; margin-right:5px;"></span></p>
+    	<h3>Director: Spike Jonze</h3>
+    	<h3>( 2013 )</h3>
+	</div>
+
+</div>
+  </body>
+</html>

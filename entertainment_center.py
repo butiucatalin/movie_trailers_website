@@ -81,7 +81,7 @@ i_robot = media.Movie("I, Robot",
 
 her = media.Movie("Her",
                   "Sci-Fi",
-                  "me",
+                  "Spike Jonze",
                   "A lonely writer develops an unlikely relationship with an operating system designed " +
                   "to meet his every need.",
                   "https://upload.wikimedia.org/wikipedia/en/4/44/Her2013Poster.jpg",
@@ -113,8 +113,8 @@ titanic = media.Movie("Titanic",
                       "James Cameron",
                       "A seventeen-year-old aristocrat falls in love with a kind but poor artist " +
                       "aboard the luxurious, ill-fated R.M.S. Titanic.",
-                      "https://upload.wikimedia.org/wikipedia/en/b/b3/The_Cure_1995.jpg",
-                      "https://www.youtube.com/watch?v=sa1tVnGSbXs",
+                      "https://upload.wikimedia.org/wikipedia/en/2/22/Titanic_poster.jpg",
+                      "https://www.youtube.com/watch?v=2e-eXJ6HgkQ",
                       1997,
                       3)
 
@@ -150,7 +150,8 @@ astro_boy = media.Movie("Astro Boy",
                       "Sci-Fi",
                       "David Bowers",
                       "When an android replica of a boy is rejected by his aggrieved creator, he goes off " +
-                      "to find his own identity in a great adventure ",
+                      "to find his own identity in an adventure that would make him the greatest hero " +
+                      "of his time.",
                       "https://upload.wikimedia.org/wikipedia/en/e/e0/Astro_boy_ver7.jpg",
                       "https://www.youtube.com/watch?v=1AhqOHom9BY",
                       2009,
@@ -209,4 +210,4 @@ print_dict(movies)
 #print_filme(movies_list)
 #print movies
 
-fresh_tomatoes.open_movies_page(movies_list)
+fresh_tomatoes.open_movies_page(movies)
